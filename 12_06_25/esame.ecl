@@ -53,7 +53,7 @@ vincolo_capacita(Negozi, [H|T], Index) :-
     vincolo_capacita(Negozi, T, Index1).
 
 funzione_obiettivo([],[],0) :- !.
-funzione_obiettivo([H1|T1], [H2|T2], Costo) :- % H2 è a sua volta una lista da scorrere 
-    element(H1, H2,Distanza),
+funzione_obiettivo([H1|T1], [H2|T2], Costo) :- % LDistanze è una lista di liste, facendo [H2|T2], prendo la prima lista
+    element(H1, H2,Distanza),                  % mi serve element perchè la lista negozi non è ground, se uso nth1 inizio il labeling e non va bene
     funzione_obiettivo(T1,T2,Costo1),
     Costo #= Distanza + Costo1.
