@@ -4,39 +4,39 @@
 :- [matrimonio].
 
 vincolo_capacita(T,_,_):-!.
-vincolo_capacita(Index,C,Idioti) :-
-occurrences(Index,Idioti,Num),
+vincolo_capacita(Index,C,L) :-
+occurrences(Index,L,Num),
 Num #=< C,
 Next_index is Index+1,
-vincolo_capacita(Next_index,C,Idioti).
+vincolo_capacita(Next_index,C,L).
 
 vincolo_conflitti([],_):-!.
-vincolo_conflitti([(I1,I2)|T],Idioti):-
-    nth1(I1,Idioti,S1),
-    nth1(I2,Idioti,S2),
+vincolo_conflitti([(I1,I2)|T],L):-
+    nth1(I1,L,S1),
+    nth1(I2,L,S2),
     S1 #\= S2,
-    vincolo_conflitti(T,Idioti).
+    vincolo_conflitti(T,L).
 
 funzione_obiettivo([],_,0):-!.
-funzione_obiettivo([(I1,I2)|T],Idioti,Costo):-
-    nth1(I1,Idioti,S1),
-    nth1(I2,Idioti,S2),
+funzione_obiettivo([(I1,I2)|T],L,Costo):-
+    nth1(I1,L,S1),
+    nth1(I2,L,S2),
     S1 #= S2 #<=> B,
-    funzione_obiettivo(T,Idioti,Costo1),
+    funzione_obiettivo(T,L,Costo1),
     Costo #= Costo1 + B.
 
-siedi(Idioti):-
+siedi(L):-
 num_invitati(N),
 num_tavoli(T),
-length(Idioti,N),
-Idioti:: 1..T,
+length(L,N),
+L:: 1..T,
 capacita(C),
-vincolo_capacita(1,C,Idioti),
+vincolo_capacita(1,C,L),
 findall((I1,I2),conflitto(I1,I2),Conflitti),
-vincolo_conflitti(Conflitti,Idioti),
+vincolo_conflitti(Conflitti,L),
 
 findall((I1,I2),conosce(I1,I2),Conoscenze),
-funzione_obiettivo(Conoscenze,Idioti,Costo),
+funzione_obiettivo(Conoscenze,L,Costo),
 
 X #= -Costo,
-minimize(labeling(Idioti),X).
+minimize(labeling(L),X).
