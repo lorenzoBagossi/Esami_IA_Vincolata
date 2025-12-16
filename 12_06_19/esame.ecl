@@ -16,7 +16,7 @@ function_obbiettente(T1,T2,Costo1),
 Costo#= Bool + Costo1.
 
 
-siede(L):-
+ordine(L):-
 endtime(T),
 findall(ID,ordine(ID,_),Num_task_lista_ordini),
 findall(Orario,ordine(_,Orario),Deadline),
